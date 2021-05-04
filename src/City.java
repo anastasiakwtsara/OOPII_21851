@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.List;
 
 import exception.WikipediaNoArcticleException;
 import model.Location;
@@ -29,7 +30,7 @@ public class City {
    *          the country code of city
    */
   public City(String name, String country) {
-    super();
+    super();//giati super??
     this.name = name;
     this.country = country;
   }
@@ -47,8 +48,18 @@ public class City {
   public double[] getGeodesicVector() {
     return geodesicVector;
   }
+  
+  
 
-  /**
+  public void setTermsVector(int[] termsVector) {
+	this.termsVector = termsVector;
+}
+
+public void setGeodesicVector(double[] geodesicVector) {
+	this.geodesicVector = geodesicVector;
+}
+
+/**
    * @return the name
    */
   public String getName() {
@@ -85,13 +96,13 @@ public class City {
    *          the list of travellers
    * @return the traveller with max similarity for this city
    */
-  public Traveller freeTicket(Traveller[] travellers) {
+  public Traveller freeTicket(List<Traveller> travellers) {
     double maxSimilarity = 0;
     Traveller maxTraveller = null;
-    for (int i = 0; i < travellers.length; i++) {
-      double similarity = travellers[i].calculateSimilarity(this);
+    for (int i = 0; i < travellers.size(); i++) {
+      double similarity = travellers.get(i).calculateSimilarity(this);
       if (similarity > maxSimilarity) {
-        maxTraveller = travellers[i];
+        maxTraveller = travellers.get(i);
         maxSimilarity = similarity;
       }
     }
@@ -118,5 +129,7 @@ public class City {
       System.out.println("Cannot find wikipedia article or location for city: " + name);
     }
   }
+
+
 
 }

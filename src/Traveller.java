@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract Traveller class.
  */
-public abstract class Traveller {
+public abstract class Traveller implements Comparable<Traveller> {
 
   private int[] termVectorInterest;
 
@@ -15,6 +17,16 @@ public abstract class Traveller {
 
   public static final int MAX_DIST = 9505;
 
+  private long timestamp;
+
+  private City visit;
+
+  private String name;
+
+  
+ 
+  
+  
   /**
    * @return the termVectorInterest
    */
@@ -52,14 +64,14 @@ public abstract class Traveller {
    *          the list of cities
    * @return the city with max similarity
    */
-  public City compareCities(ArrayList<City> cities) {
+  public City compareCities(Map<String, City> cities) {
     double maxSimilarity = 0;
     City maxCity = null;
-    for (City city : cities) {
-      double similarity = calculateSimilarity(city);
+    for (Map.Entry<String, City> entry : cities.entrySet()) {
+      double similarity = calculateSimilarity(entry.getValue());
       if (similarity > maxSimilarity) {
         maxSimilarity = similarity;
-        maxCity = city;
+        maxCity = entry.getValue();
       }
     }
     return maxCity;
@@ -68,12 +80,18 @@ public abstract class Traveller {
   /**
    * Return city with max number similarity for traveller.
    * 
-   * @param cities the list of cities
-   * @param number the number of max similarity
+   * @param cities
+   *          the list of cities
+   * @param number
+   *          the number of max similarity
    * @return the city with max number similarity
    */
-  public City compareCities(ArrayList<City> cities, int number) {
-    Collections.sort(cities, new Comparator<City>() {
+  public City compareCities(HashMap<String, City> cities, int number) {
+    ArrayList<City> list = new ArrayList<>();
+    for (Map.Entry<String, City> city : cities.entrySet()) {
+      list.add(city.getValue());
+    }
+    Collections.sort(list, new Comparator<City>() {
 
       @Override
       public int compare(City o1, City o2) {
@@ -88,14 +106,15 @@ public abstract class Traveller {
         }
       }
     });
-    Collections.reverse(cities);
-    return cities.get(number - 1);
+    Collections.reverse(list);
+    return list.get(number - 1);
   }
 
   /**
    * Calculate geodesic vector similarity
    * 
-   * @param city the city to calculate similarity for
+   * @param city
+   *          the city to calculate similarity for
    * @return the similarity number
    */
   protected double calculateSimilarityGeodesicVector(City city) {
@@ -110,10 +129,14 @@ public abstract class Traveller {
   /**
    * Return geodesic distance between to locations.
    * 
-   * @param lat1 latitude of first location
-   * @param lon1 longitude of first location
-   * @param lat2 latitude of second location
-   * @param lon2 longitude of second location
+   * @param lat1
+   *          latitude of first location
+   * @param lon1
+   *          longitude of first location
+   * @param lat2
+   *          latitude of second location
+   * @param lon2
+   *          longitude of second location
    * @return the distance in kilometers
    */
   private double distance(double lat1, double lon1, double lat2, double lon2) {
@@ -131,4 +154,39 @@ public abstract class Traveller {
       return dist;
     }
   }
+
+  public int compareTo(Traveller tr) {
+    if (this.timestamp < tr.timestamp) {
+      return -1;
+    } else if (this.timestamp > tr.timestamp) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public City getVisit() {
+    return visit;
+  }
+
+  public void setVisit(City visit) {
+    this.visit = visit;
+  }
+
+  public long getTimestamp() {
+    return timestamp;
+  }
+
+  public void setTimestamp(long timestamp) {
+    this.timestamp = timestamp;
+  }
+
 }

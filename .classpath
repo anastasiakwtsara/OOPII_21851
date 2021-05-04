@@ -18,5 +18,7 @@
 	<classpathentry kind="lib" path="lib/jersey-core-1.19.1.jar"/>
 	<classpathentry kind="lib" path="lib/jsr311-api-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/open-data-rest.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dell/Desktop/mssql-jdbc-9.2.1.jre8.jar"/>
+	<classpathentry kind="lib" path="lib/ojdbc7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
