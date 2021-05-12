@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class CityRecommendationApplication2 {
 	
-  
+  //static h main , static k ta antikeimena pou xrhsimopoiei
   private static JSONFileReader json = new JSONFileReader();
   private static DatabaseConnector db = new DatabaseConnector();
 
@@ -298,12 +298,14 @@ public class CityRecommendationApplication2 {
       if (chosenCity != null) {
         double d = tr1.calculateSimilarity(chosenCity);
         System.out.println("Your similarity for the city you chose is " + d);
-      } else {
+      } else { 
         City city = new City();
-        city.retrieveWikiAndLocationData();
         city.setName(name);
         city.setCountry(country);
+        city.retrieveWikiAndLocationData();
         cities.put(name, city);
+        db.addDataToDB(name, country, city.getGeodesicVector()[0],city.getGeodesicVector()[1], city.getTermsVector()[0], city.getTermsVector()[1], city.getTermsVector()[2], city.getTermsVector()[3], city.getTermsVector()[4], city.getTermsVector()[5], city.getTermsVector()[6], city.getTermsVector()[7], city.getTermsVector()[8], city.getTermsVector()[9]);
+        
         double d = tr1.calculateSimilarity(city);
         System.out.println("Your similarity for the city you chose is " + d);
       }

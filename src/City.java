@@ -30,7 +30,6 @@ public class City {
    *          the country code of city
    */
   public City(String name, String country) {
-    super();//giati super??
     this.name = name;
     this.country = country;
   }
@@ -113,10 +112,12 @@ public void setGeodesicVector(double[] geodesicVector) {
    * Retrieve the location data and criterion data from wikipedia
    */
   public void retrieveWikiAndLocationData() {
+	  //to open data rest gurnaei to location
+	  
     try {
-      String wikiArticle = OpenDataRest.RetrieveWikipedia(name);
+      String wikiArticle = OpenDataRest.RetrieveWikipedia(name);//to apotelesma se ena string (olo to keimeno gia thn polh)
       Location location = OpenDataRest.RetrieveOpenWeatherMap(name, country,
-          "712259cb3d2c2691b6363207459e2bc7");
+          "712259cb3d2c2691b6363207459e2bc7");//me vash onoma,xwra pairnei to location ths polhs
       geodesicVector[0] = location.getLatitude();
       geodesicVector[1] = location.getLongitude();
 
@@ -124,7 +125,7 @@ public void setGeodesicVector(double[] geodesicVector) {
           "river", "monument", "bar" };
       for (int i = 0; i < criterions.length; i++) {
         termsVector[i] = OpenDataRest.countCriterionfCity(wikiArticle, criterions[i]);
-      }
+      }//mesw ths countCriterions metraei poses fores eide to kathe term
     } catch (IOException | WikipediaNoArcticleException e) {
       System.out.println("Cannot find wikipedia article or location for city: " + name);
     }

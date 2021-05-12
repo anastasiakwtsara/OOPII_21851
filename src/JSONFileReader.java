@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JSONFileReader {
+	//pairnei mia lista apo travellers k th grafei se ena json arxeio
 
   public void writeJSON(List<Traveller> travellers)
       throws JsonGenerationException, JsonMappingException, IOException {
@@ -18,6 +19,7 @@ public class JSONFileReader {
     mapper.writeValue(new File("travellers_arraylist.json"), data);
   }
 
+  	//diavazei to json k to metatrepei se lista apo travellers
   public List<Traveller> readJSON()
       throws JsonParseException, JsonMappingException, IOException {
     ObjectMapper mapper = new ObjectMapper();
@@ -26,3 +28,4 @@ public class JSONFileReader {
     return data.getCollectionAllTravellers();
   }
 }
+///ola afta ginontai mesw ths alltravellers
