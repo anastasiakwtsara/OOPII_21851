@@ -24,8 +24,11 @@ public abstract class Traveller implements Comparable<Traveller> {
   private String name;
 
   
- 
+
   
+ public Traveller() {}
+ 
+
   
   /**
    * @return the termVectorInterest

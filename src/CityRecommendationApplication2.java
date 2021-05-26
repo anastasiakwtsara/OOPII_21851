@@ -273,6 +273,13 @@ public class CityRecommendationApplication2 {
       }
     }
   }
+  //anazhta ton traveller pou exei parei ap thn scanner 
+  //ton vazei se mia kainourgia arraylist (oses fores ton vrei sthn arxikh)
+  //kanei sort tin arraylist simfwna me thn compareTo pou orisa
+  //epistrefei thn prwth fora pou tha sinantisi ton traveller
+  //zhtaei mia xwra k kanei calculate similarity giathn sigkekrimeni, an den uparxei tote
+  //ekxwreitai ekeinh thn wra sth bd
+  //an o traveller pou phre ap th scanner den iparxei arxika, emfanizei minima lathous
 
   private static void calcSimil(Map<String, City> cities, Scanner scanner,
       List<Traveller> travellers) {
