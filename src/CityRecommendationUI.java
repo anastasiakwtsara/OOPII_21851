@@ -97,6 +97,17 @@ public class CityRecommendationUI {
 
       }
     });
+    
+    JButton calcSimilCollaborativeButton = new JButton("Calc your simil based on other travellers");
+    calcSimilCollaborativeButton.setBounds(28, 230, 212, 20);
+    calcSimilCollaborativeButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent ae) {
+              MAIN_FRAME.dispose();
+              new CalcSimilCollaborativeFrame(citiesMap, travellerList, db);
+            
+
+      }
+    });
 
     MAIN_FRAME.add(cityButton);
     MAIN_FRAME.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -106,6 +117,7 @@ public class CityRecommendationUI {
     MAIN_FRAME.add(compareCitiesButton);
     MAIN_FRAME.add(freeTicketButton);
     MAIN_FRAME.add(calcSimilButton);
+    MAIN_FRAME.add(calcSimilCollaborativeButton);
     MAIN_FRAME.setLayout(null);
     MAIN_FRAME.setSize(300, 300);
     MAIN_FRAME.setVisible(true);

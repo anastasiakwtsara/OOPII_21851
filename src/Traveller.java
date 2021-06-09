@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -192,4 +193,45 @@ public abstract class Traveller implements Comparable<Traveller> {
     this.timestamp = timestamp;
   }
 
+
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Arrays.hashCode(geodesicVector);
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + Arrays.hashCode(termVectorInterest);
+    result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
+    result = prime * result + ((visit == null) ? 0 : visit.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Traveller other = (Traveller) obj;
+    if (!Arrays.equals(geodesicVector, other.geodesicVector))
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    if (!Arrays.equals(termVectorInterest, other.termVectorInterest))
+      return false;
+    if (timestamp != other.timestamp)
+      return false;
+    if (visit == null) {
+      if (other.visit != null)
+        return false;
+    } else if (!visit.equals(other.visit))
+      return false;
+    return true;
+  }
 }

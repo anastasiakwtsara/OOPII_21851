@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+
+import exception.WikipediaNoArcticleException;
 
 /**
  * Class for CityRecomendation application
@@ -124,7 +127,11 @@ public class CityRecommendationApplication2 {
     System.out.println("Please provide city country code");
     String country = scanner.nextLine();
     City city = new City(name, country);
-    city.retrieveWikiAndLocationData();
+    try {
+      city.retrieveWikiAndLocationData();
+    } catch (IOException | WikipediaNoArcticleException e) {
+      System.out.println("Cannot find wikipedia article or location for city: " + name);
+    }
     cities.put(name, city);
     db.addDataToDB(name, country, city.getGeodesicVector()[0],city.getGeodesicVector()[1], city.getTermsVector()[0], city.getTermsVector()[1], city.getTermsVector()[2], city.getTermsVector()[3], city.getTermsVector()[4], city.getTermsVector()[5], city.getTermsVector()[6], city.getTermsVector()[7], city.getTermsVector()[8], city.getTermsVector()[9]);
   }
@@ -291,12 +298,10 @@ public class CityRecommendationApplication2 {
       for (Traveller traveller : travellers) {
         if (fullname.equals(traveller.getName())) {
           travellers2.add(traveller);
-          
         }
-        
       }
- Collections.sort(travellers2);
- tr1=travellers.get(0);
+      Collections.sort(travellers2);
+      tr1=travellers2.get(0);
       System.out.println("Please enter the city you want to search and the country code it belongs");
       String name = scanner.nextLine();
       String country = scanner.nextLine();
@@ -316,9 +321,10 @@ public class CityRecommendationApplication2 {
         double d = tr1.calculateSimilarity(city);
         System.out.println("Your similarity for the city you chose is " + d);
       }
+    } catch (IOException | WikipediaNoArcticleException e) {
+      System.out.println("Could not get wiki and location data for city");
     } catch (Exception e) {
       System.out.println("You are not added as a traveller in the system yet");
-
     }
   }
 }

@@ -1,6 +1,7 @@
 
 	import java.awt.event.ActionEvent;
 	import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +12,8 @@ import javax.swing.JButton;
 	import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import exception.WikipediaNoArcticleException;
 
 	public class CalcSimilFrame {
 	  private JFrame frame = new JFrame("Calc Simil");
@@ -38,7 +41,7 @@ import javax.swing.JTextField;
 			        
 			      }
 			 Collections.sort(travellers2);
-			 tr1=travellers.get(0);
+			 tr1=travellers2.get(0);
 			      String cityname = cityName.getText();
 			      City chosenCity = cities.get(cityname);
 			      
@@ -55,6 +58,8 @@ import javax.swing.JTextField;
 			        double d = tr1.calculateSimilarity(city);
 			        JOptionPane.showMessageDialog(frame,"Your similarity for the city you chose is " + d);
 			      }
+			    } catch (IOException | WikipediaNoArcticleException e) {
+			      System.out.println("Could not get wiki and location data for city");
 			    } catch (Exception e) {
 			    	JOptionPane.showMessageDialog(frame,"You are not added as a traveller in the system yet");
 

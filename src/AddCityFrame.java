@@ -1,12 +1,15 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import exception.WikipediaNoArcticleException;
 
 public class AddCityFrame {
 
@@ -25,7 +28,11 @@ public class AddCityFrame {
         String name = cityName.getText();
         String code = countryCode.getText();
         City city = new City(name, code);
-        city.retrieveWikiAndLocationData();
+        try {
+          city.retrieveWikiAndLocationData();
+        } catch (IOException | WikipediaNoArcticleException e) {
+          System.out.println("Cannot find wikipedia article or location for city: " + name);
+        }
         database.addDataToDB(name, code, city.getGeodesicVector()[0], city.getGeodesicVector()[1],
             city.getTermsVector()[0], city.getTermsVector()[1], city.getTermsVector()[2],
             city.getTermsVector()[3], city.getTermsVector()[4], city.getTermsVector()[5],

@@ -1,5 +1,9 @@
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import exception.WikipediaNoArcticleException;
 import model.Location;
@@ -47,18 +51,16 @@ public class City {
   public double[] getGeodesicVector() {
     return geodesicVector;
   }
-  
-  
 
   public void setTermsVector(int[] termsVector) {
-	this.termsVector = termsVector;
-}
+    this.termsVector = termsVector;
+  }
 
-public void setGeodesicVector(double[] geodesicVector) {
-	this.geodesicVector = geodesicVector;
-}
+  public void setGeodesicVector(double[] geodesicVector) {
+    this.geodesicVector = geodesicVector;
+  }
 
-/**
+  /**
    * @return the name
    */
   public String getName() {
@@ -110,14 +112,30 @@ public void setGeodesicVector(double[] geodesicVector) {
 
   /**
    * Retrieve the location data and criterion data from wikipedia
+   * 
+   * @throws IOException
+   * @throws JsonMappingException
+   * @throws JsonParseException
+   * @throws WikipediaNoArcticleException
    */
-  public void retrieveWikiAndLocationData() {
-	  //to open data rest gurnaei to location
-	  
+  public void retrieveWikiAndLocationData() throws IOException, WikipediaNoArcticleException {
+    // to open data rest gurnaei to location
+    WikiRunnable wikiRunnable = new WikiRunnable(name);
+    Thread threadWiki = new Thread(wikiRunnable);
+    threadWiki.start();
+    LocationRunnable locationRunnable = new LocationRunnable(name, country,
+        "712259cb3d2c2691b6363207459e2bc7");
+    Thread locationWiki = new Thread(locationRunnable);
+    locationWiki.start();
     try {
-      String wikiArticle = OpenDataRest.RetrieveWikipedia(name);//to apotelesma se ena string (olo to keimeno gia thn polh)
-      Location location = OpenDataRest.RetrieveOpenWeatherMap(name, country,
-          "712259cb3d2c2691b6363207459e2bc7");//me vash onoma,xwra pairnei to location ths polhs
+      // Wait for both threads to finish in order to retrieve results
+      threadWiki.join();
+      locationWiki.join();
+
+      // Retrieve results
+      String wikiArticle = wikiRunnable.getWikiArticle();
+      Location location = locationRunnable.getLocation();
+
       geodesicVector[0] = location.getLatitude();
       geodesicVector[1] = location.getLongitude();
 
@@ -125,12 +143,46 @@ public void setGeodesicVector(double[] geodesicVector) {
           "river", "monument", "bar" };
       for (int i = 0; i < criterions.length; i++) {
         termsVector[i] = OpenDataRest.countCriterionfCity(wikiArticle, criterions[i]);
-      }//mesw ths countCriterions metraei poses fores eide to kathe term
-    } catch (IOException | WikipediaNoArcticleException e) {
-      System.out.println("Cannot find wikipedia article or location for city: " + name);
+      }
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
 
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((country == null) ? 0 : country.hashCode());
+    result = prime * result + Arrays.hashCode(geodesicVector);
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + Arrays.hashCode(termsVector);
+    return result;
+  }
 
-
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    City other = (City) obj;
+    if (country == null) {
+      if (other.country != null)
+        return false;
+    } else if (!country.equals(other.country))
+      return false;
+    if (!Arrays.equals(geodesicVector, other.geodesicVector))
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    if (!Arrays.equals(termsVector, other.termsVector))
+      return false;
+    return true;
+  }
 }
