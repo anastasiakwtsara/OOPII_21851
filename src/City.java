@@ -148,7 +148,7 @@ public class City {
       e.printStackTrace();
     }
   }
-
+//gia na xrhsimopoihsw ws key ton traveller sto calcsimil collaborative
   @Override
   public int hashCode() {
     final int prime = 31;
